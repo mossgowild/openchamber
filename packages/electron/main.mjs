@@ -22,6 +22,7 @@ import { resolveManagedOpenCodeCwd } from './opencode-cwd.mjs';
 import { stopEmbeddedServer } from './server-shutdown.mjs';
 import { describeStartupEnvironmentOverrides, resolveStartupUrlProbePlan } from './startup-url-selection.mjs';
 import { clearAppCache } from './app-cache.mjs';
+import { hideWindow } from './window-hide.mjs';
 import { parseExternalUrl } from './external-url-policy.mjs';
 import {
   BACKGROUND_START_ARG,
@@ -2315,7 +2316,7 @@ const handleMiniChatGlobalShortcut = () => {
     const target = BrowserWindow.fromId(action.windowId);
     if (!target || target.isDestroyed()) return;
     if (action.type === 'hide') {
-      target.hide();
+      hideWindow(target);
     } else {
       if (!target.isVisible()) target.show();
       target.focus();
@@ -2466,7 +2467,7 @@ const hideQuakeWindow = (browserWindow) => {
   } catch {
     // Persist is best-effort; hiding must not fail because of it.
   }
-  browserWindow.hide();
+  hideWindow(browserWindow);
 };
 
 // Leaves the dropdown and puts the normal window back: the bounds and the
@@ -2672,7 +2673,7 @@ const createBrowserWindow = ({ label, restoreGeometry, url, runtimeConfig = {}, 
     if (!state.quitRequested && shouldHideMainWindowToTray(browserWindow)) {
       debounceWindowStatePersist(browserWindow, true);
       event.preventDefault();
-      browserWindow.hide();
+      hideWindow(browserWindow);
       return;
     }
 
@@ -2690,7 +2691,7 @@ const createBrowserWindow = ({ label, restoreGeometry, url, runtimeConfig = {}, 
       if (remainingVisible <= 1) {
         debounceWindowStatePersist(browserWindow, true);
         event.preventDefault();
-        browserWindow.hide();
+        hideWindow(browserWindow);
         return;
       }
     }
@@ -6236,7 +6237,7 @@ const dispatchTrayAction = async (action) => {
       : BrowserWindow.getFocusedWindow();
     if (target && !target.isDestroyed() && target.isVisible()) {
       debounceWindowStatePersist(target, true);
-      target.hide();
+      hideWindow(target);
     }
     return;
   }
@@ -6247,7 +6248,7 @@ const dispatchTrayAction = async (action) => {
       : null;
     if (target && target.isVisible() && !target.isMinimized()) {
       debounceWindowStatePersist(target, true);
-      target.hide();
+      hideWindow(target);
       return;
     }
     await revealMainWindow();
