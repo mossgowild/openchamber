@@ -108,14 +108,20 @@ const Toaster = ({ position = "bottom-right", ...props }: ToasterProps) => {
         unstyled: true,
         classNames: {
           toast:
-            "oc-surface-elevated group/toast toast flex w-[var(--width)] items-center gap-2 rounded-[var(--radius-xl)] px-3.5 py-3 text-foreground data-[expanded=false]:data-[front=false]:[&>*]:opacity-0 [&_[data-button]]:ms-auto [&_[data-cancel]+[data-button]]:ms-0",
-          content: "flex min-w-0 flex-col",
-          title: "typography-ui-label font-medium text-foreground",
+            "oc-surface-elevated group/toast toast flex w-[var(--width)] flex-wrap items-start gap-2 rounded-[var(--radius-xl)] px-3.5 py-3 text-foreground data-[expanded=false]:data-[front=false]:[&>*]:opacity-0 [&_[data-button]]:self-center [&_[data-button]]:ms-auto [&_[data-cancel]+[data-button]]:ms-0",
+          // Capped to the row beside the icon (its 1.25rem, its 0.125rem margin
+          // and the 0.5rem gap): long text fills that row and pushes the buttons
+          // onto a row of their own below, where the first one's auto margin
+          // keeps them at the end. Text that fits leaves them beside it.
+          content: "flex min-w-0 flex-col [[data-icon]+&]:max-w-[calc(100%-1.875rem)]",
+          // Padded to the xs button's 1.5rem, so a one-line title centers on the
+          // buttons beside it and the icon lines up with the title's first line.
+          title: "typography-ui-label font-medium text-foreground py-[calc((1.5rem-1lh)/2)]",
           // `!`: sonner colours dark-theme descriptions even when unstyled.
-          description: "typography-meta !text-muted-foreground mt-0.5",
+          description: "typography-meta !text-muted-foreground",
           actionButton: buttonVariants({ size: "xs" }),
           cancelButton: buttonVariants({ variant: "secondary", size: "xs" }),
-          icon: "relative me-0.5 flex size-5 shrink-0 items-center justify-center text-muted-foreground [&>svg]:size-5",
+          icon: "relative me-0.5 flex h-6 w-5 shrink-0 items-center justify-center text-muted-foreground [&>svg]:size-5",
           success: "[&_[data-icon]]:!text-[var(--status-success)]",
           error: "[&_[data-icon]]:!text-[var(--status-error)]",
           warning: "[&_[data-icon]]:!text-[var(--status-warning)]",
