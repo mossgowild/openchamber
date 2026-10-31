@@ -2349,7 +2349,7 @@ export const ModelControls: React.FC<ModelControlsProps> = ({
             // The effort as the composer shows it after the model: "/ medium".
             return (
                 <span className={cn(
-                    'typography-micro whitespace-nowrap lowercase',
+                    'typography-micro whitespace-nowrap',
                     isHighlighted
                         ? (wasAdjusted ? 'text-interactive-selection-foreground' : 'text-interactive-selection-foreground/70')
                         : (wasAdjusted ? 'text-foreground' : 'text-muted-foreground'),
