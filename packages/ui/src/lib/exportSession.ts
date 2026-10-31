@@ -7,6 +7,7 @@ import { getRevealLabelKey } from '@/lib/utils';
 import { readContextPart } from '@/lib/messages/contextParts';
 import { formatContextMessage, formatMessageText } from '@/lib/messages/messageMarkdown';
 import { agentLabel } from '@/lib/agentLabel';
+import { formatVariantLabel } from '@/lib/modelVariants';
 
 export type SessionMessageRecord = { info: Message; parts: Part[] };
 
@@ -52,7 +53,7 @@ function formatAssistantModel(record: SessionMessageRecord): string {
     return model;
   }
 
-  return `${model}, thinking: ${variant}`;
+  return `${model}, thinking: ${formatVariantLabel(variant)}`;
 }
 
 function formatMessageHeader(record: SessionMessageRecord): string {
